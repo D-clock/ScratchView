@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Build;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -43,6 +44,8 @@ public class SimpleCanvasView extends View {
         drawText(canvas);
         drawPoint(canvas);
         drawRect(canvas);
+        drawOval(canvas);
+
     }
 
     /**
@@ -145,8 +148,26 @@ public class SimpleCanvasView extends View {
         canvas.drawPoint(halfWidth, 400, paint);
     }
 
-    private void drawRect(Canvas canvas){
+    private void drawRect(Canvas canvas) {
 
+        int width = getMeasuredWidth();
+        int height = getMeasuredHeight();
+
+        Paint paint = new Paint();
+        paint.setColor(0xff365618);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(20f);
+        canvas.drawRect((width - 300) / 2, (height - 300) / 2, (width - 300) / 2 + 300, (height - 300) / 2 + 300, paint);
+
+    }
+
+    private void drawOval(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(5f);
+        paint.setColor(0xff990000);
+        RectF oval = new RectF(0, 300, getMeasuredWidth(), 600);
+        canvas.drawOval(oval, paint);
     }
 
     @Override
