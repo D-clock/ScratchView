@@ -15,4 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Simple TextView" />
+
+    <Button
+        android:id="@+id/btn_canvas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Simple Canvas" />
 </LinearLayout>

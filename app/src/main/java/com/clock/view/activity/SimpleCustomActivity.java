@@ -21,6 +21,7 @@ public class SimpleCustomActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_simple_custom);
 
         findViewById(R.id.btn_tv).setOnClickListener(this);
+        findViewById(R.id.btn_canvas).setOnClickListener(this);
 
     }
 
@@ -29,6 +30,9 @@ public class SimpleCustomActivity extends AppCompatActivity implements View.OnCl
         int viewId = v.getId();
         if (viewId == R.id.btn_tv) {
             Intent intent = new Intent(this, SimpleTextViewActivity.class);
+            startActivity(intent);
+        } else if (viewId == R.id.btn_canvas) {
+            Intent intent = new Intent(this, SimpleCanvasActivity.class);
             startActivity(intent);
         }
     }

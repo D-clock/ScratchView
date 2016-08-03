@@ -20,6 +20,7 @@
         <activity android:name=".activity.CustomViewGroupActivity" />
         <activity android:name=".activity.SimpleCustomActivity" />
         <activity android:name=".activity.SimpleTextViewActivity" />
+        <activity android:name=".activity.SimpleCanvasActivity"></activity>
     </application>
 
 </manifest>

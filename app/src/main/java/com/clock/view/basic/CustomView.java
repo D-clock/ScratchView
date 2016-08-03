@@ -7,9 +7,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
-import android.renderscript.Type;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -32,7 +33,11 @@ public class CustomView extends View {
     /**
      * 字体大小
      */
-    private int mTextSize;
+    private float mTextSize;
+    /**
+     * 绘制文字的笔
+     */
+    private TextPaint mTextPaint;
 
     public CustomView(Context context) {
         super(context);
@@ -66,6 +71,17 @@ public class CustomView extends View {
     }
 
     private void initAttr(Context context, TypedArray typedArray) {
+        mText = typedArray.getString(R.styleable.CustomView_text);
+
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        float defaultSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 15f, metrics);
+        mTextSize = typedArray.getDimension(R.styleable.CustomView_textSize, defaultSize);
+        Log.i(TAG, "mTextSize: " + mTextSize);
+
+        mTextPaint = new TextPaint();
+        mTextPaint.setTextSize(mTextSize);
+        mTextPaint.setARGB(255, 56, 167, 150);
+        mTextPaint.setAntiAlias(true);
 
         typedArray.recycle();
     }
@@ -74,15 +90,20 @@ public class CustomView extends View {
     protected void onDraw(Canvas canvas) {
         Log.i(TAG, "onDraw");
         super.onDraw(canvas);
-        TextPaint textPaint = new TextPaint();
-        textPaint.setTextSize(30f);
-        textPaint.setARGB(255, 56, 167, 150);
-        textPaint.setAntiAlias(true);
-        canvas.drawText("D_clock爱吃葱花", 0, 0, textPaint);
-        Paint linePaint = new Paint();
-        linePaint.setARGB(255, 56, 167, 150);
-        linePaint.setStrokeWidth(10f);
-        canvas.drawLine(5, 250, 250, 250, linePaint);
+
+        drawText(canvas);
+    }
+
+    private void drawText(Canvas canvas) {
+        if (!TextUtils.isEmpty(mText)) {
+            Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
+            Log.i(TAG, "fontMetrics.top : " + fontMetrics.top);//baseline到文本最顶端的距离+为一些特殊字符预留了顶部空间
+            Log.i(TAG, "fontMetrics.bottom : " + fontMetrics.bottom);//baseline到文本最底端的距离+为一些特殊字符预留了底部空间
+            Log.i(TAG, "fontMetrics.leading : " + fontMetrics.leading);//行间距，表示上一行字符的descent到该行字符的ascent之间的距离
+            Log.i(TAG, "fontMetrics.descent : " + fontMetrics.descent);//baseline到文本最顶端的距离
+            Log.i(TAG, "fontMetrics.ascent : " + fontMetrics.ascent);//baseline到文本最底端的距离
+            canvas.drawText(mText, 0, Math.abs(fontMetrics.ascent), mTextPaint);//设置baseline的坐标
+        }
     }
 
     @Override
