@@ -18,6 +18,8 @@
         <activity android:name=".activity.BasicCustomActivity" />
         <activity android:name=".activity.CustomViewActivity" />
         <activity android:name=".activity.CustomViewGroupActivity" />
+        <activity android:name=".activity.SimpleCustomActivity" />
+        <activity android:name=".activity.SimpleTextViewActivity" />
     </application>
 
 </manifest>

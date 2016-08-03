@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.clock.view.activity.BasicCustomActivity;
+import com.clock.view.activity.SimpleCustomActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.btn_basic_custom).setOnClickListener(this);
+        findViewById(R.id.btn_simple_custom).setOnClickListener(this);
 
     }
 
@@ -23,6 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int viewId = v.getId();
         if (viewId == R.id.btn_basic_custom) {
             Intent intent = new Intent(this, BasicCustomActivity.class);
+            startActivity(intent);
+        } else if (viewId == R.id.btn_simple_custom) {
+            Intent intent = new Intent(this, SimpleCustomActivity.class);
             startActivity(intent);
         }
     }
