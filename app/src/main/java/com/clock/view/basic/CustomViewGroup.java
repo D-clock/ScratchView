@@ -36,18 +36,45 @@ public class CustomViewGroup extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Log.i(TAG , "onLayout");
+        Log.i(TAG, "onLayout");
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.i(TAG , "onDraw");
+        Log.i(TAG, "onDraw");
         super.onDraw(canvas);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.i(TAG , "onMeasure");
+        Log.i(TAG, "onMeasure");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        //自定义View系统默认是EXACTLY模式（具体值或者match_parent），其他模式 AT_MOST（wrap_content）、UNSPECIFIED 需要自行实现
+        int measuredWidth = measureSize(widthMeasureSpec);
+        int measuredHeight = measureSize(heightMeasureSpec);
+        setMeasuredDimension(measuredWidth, measuredHeight);
+    }
+
+    /**
+     * 测量获取当前View设置的实际尺寸大小
+     *
+     * @param measureSpec
+     * @return
+     */
+    private int measureSize(int measureSpec) {
+        int size = 0;
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+        Log.i(TAG, "specMode: " + specMode);
+        Log.i(TAG, "specSize: " + specSize);
+        if (specMode == MeasureSpec.EXACTLY) {
+            size = specSize;
+        } else {
+            if (specMode == MeasureSpec.AT_MOST) {
+                size = Math.min(size, specSize);
+            }
+        }
+        return size;
+
     }
 }

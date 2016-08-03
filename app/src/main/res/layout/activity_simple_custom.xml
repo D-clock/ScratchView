@@ -8,17 +8,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.clock.view.MainActivity">
+    tools:context="com.clock.view.activity.SimpleCustomActivity">
 
     <Button
-        android:id="@+id/btn_basic_custom"
+        android:id="@+id/btn_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Basic Custom" />
-
-    <Button
-        android:id="@+id/btn_simple_custom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Simple Custom" />
+        android:text="Simple TextView" />
 </LinearLayout>
