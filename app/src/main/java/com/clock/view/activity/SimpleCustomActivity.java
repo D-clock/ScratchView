@@ -22,6 +22,7 @@ public class SimpleCustomActivity extends AppCompatActivity implements View.OnCl
 
         findViewById(R.id.btn_tv).setOnClickListener(this);
         findViewById(R.id.btn_canvas).setOnClickListener(this);
+        findViewById(R.id.btn_pdx).setOnClickListener(this);
 
     }
 
@@ -33,6 +34,9 @@ public class SimpleCustomActivity extends AppCompatActivity implements View.OnCl
             startActivity(intent);
         } else if (viewId == R.id.btn_canvas) {
             Intent intent = new Intent(this, SimpleCanvasActivity.class);
+            startActivity(intent);
+        } else if (viewId == R.id.btn_pdx) {
+            Intent intent = new Intent(this, PorterDuffXfermodeActivity.class);
             startActivity(intent);
         }
     }

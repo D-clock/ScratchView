@@ -20,7 +20,8 @@
         <activity android:name=".activity.CustomViewGroupActivity" />
         <activity android:name=".activity.SimpleCustomActivity" />
         <activity android:name=".activity.SimpleTextViewActivity" />
-        <activity android:name=".activity.SimpleCanvasActivity"></activity>
+        <activity android:name=".activity.SimpleCanvasActivity" />
+        <activity android:name=".activity.PorterDuffXfermodeActivity"></activity>
     </application>
 
 </manifest>
