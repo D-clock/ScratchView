@@ -11,11 +11,11 @@ import com.clock.view.R;
  * @author Clock
  * @since 2016-08-03
  */
-public class SimpleCanvasActivity extends AppCompatActivity {
+public class CanvasActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_simple_canvas);
+        setContentView(R.layout.activity_canvas);
     }
 }

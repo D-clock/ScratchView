@@ -21,6 +21,10 @@ public class BasicCustomActivity extends AppCompatActivity implements View.OnCli
 
         findViewById(R.id.btn_custom_view).setOnClickListener(this);
         findViewById(R.id.btn_custom_viewgroup).setOnClickListener(this);
+        findViewById(R.id.btn_tv).setOnClickListener(this);
+        findViewById(R.id.btn_canvas).setOnClickListener(this);
+        findViewById(R.id.btn_pdx).setOnClickListener(this);
+        findViewById(R.id.btn_shader).setOnClickListener(this);
 
     }
 
@@ -30,11 +34,21 @@ public class BasicCustomActivity extends AppCompatActivity implements View.OnCli
         if (viewId == R.id.btn_custom_view) {
             Intent intent = new Intent(this, CustomViewActivity.class);
             startActivity(intent);
-
         } else if (viewId == R.id.btn_custom_viewgroup) {
             Intent intent = new Intent(this, CustomViewGroupActivity.class);
             startActivity(intent);
-
+        } else if (viewId == R.id.btn_tv) {
+            Intent intent = new Intent(this, SimpleTextViewActivity.class);
+            startActivity(intent);
+        } else if (viewId == R.id.btn_canvas) {
+            Intent intent = new Intent(this, CanvasActivity.class);
+            startActivity(intent);
+        } else if (viewId == R.id.btn_pdx) {
+            Intent intent = new Intent(this, PorterDuffXfermodeActivity.class);
+            startActivity(intent);
+        } else if (viewId == R.id.btn_shader) {
+            Intent intent = new Intent(this, ShaderActivity.class);
+            startActivity(intent);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.clock.view.simple;
+package com.clock.view.basic;
 
 import android.annotation.TargetApi;
 import android.content.Context;

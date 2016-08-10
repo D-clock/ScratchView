@@ -18,10 +18,16 @@
         <activity android:name=".activity.BasicCustomActivity" />
         <activity android:name=".activity.CustomViewActivity" />
         <activity android:name=".activity.CustomViewGroupActivity" />
-        <activity android:name=".activity.SimpleCustomActivity" />
         <activity android:name=".activity.SimpleTextViewActivity" />
-        <activity android:name=".activity.SimpleCanvasActivity" />
-        <activity android:name=".activity.PorterDuffXfermodeActivity"></activity>
+        <activity
+            android:name=".activity.CanvasActivity"
+            android:label="Canvas" />
+        <activity
+            android:name=".activity.PorterDuffXfermodeActivity"
+            android:label="PorterDuffXfermode" />
+        <activity
+            android:name=".activity.ShaderActivity"
+            android:label="Shader" />
     </application>
 
 </manifest>
