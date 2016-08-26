@@ -28,6 +28,9 @@
         <activity
             android:name=".activity.ShaderActivity"
             android:label="Shader" />
+        <activity
+            android:name=".activity.ScratchDemoActivity"
+            android:label="ScratchDemoActivity" />
     </application>
 
 </manifest>
