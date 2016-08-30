@@ -31,6 +31,9 @@
         <activity
             android:name=".activity.ScratchDemoActivity"
             android:label="ScratchDemoActivity" />
+        <activity
+            android:name=".activity.PathActivity"
+            android:label="PathDemo" />
     </application>
 
 </manifest>

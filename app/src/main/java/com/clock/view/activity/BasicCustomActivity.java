@@ -25,6 +25,7 @@ public class BasicCustomActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.btn_canvas).setOnClickListener(this);
         findViewById(R.id.btn_pdx).setOnClickListener(this);
         findViewById(R.id.btn_shader).setOnClickListener(this);
+        findViewById(R.id.btn_path).setOnClickListener(this);
 
     }
 
@@ -48,6 +49,9 @@ public class BasicCustomActivity extends AppCompatActivity implements View.OnCli
             startActivity(intent);
         } else if (viewId == R.id.btn_shader) {
             Intent intent = new Intent(this, ShaderActivity.class);
+            startActivity(intent);
+        } else if (viewId == R.id.btn_path) {
+            Intent intent = new Intent(this, PathActivity.class);
             startActivity(intent);
         }
     }
