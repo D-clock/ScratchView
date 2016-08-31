@@ -14,9 +14,9 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 
 /**
  * Created by Clock on 2016/8/26.
@@ -61,6 +61,20 @@ public class ScratchView extends View {
      * 擦除轨迹
      */
     private Path mErasePath;
+    /**
+     * 擦除效果起始点的x坐标
+     */
+    private float mStartX;
+    /**
+     * 擦除效果起始点的y坐标
+     */
+    private float mStartY;
+    /**
+     * 最小滑动距离
+     */
+    private int mTouchSlop;
+
+    private EraseListener mEraseListener;
 
     public ScratchView(Context context) {
         super(context);
@@ -106,6 +120,10 @@ public class ScratchView extends View {
         setEraserSize(DEFAULT_ERASER_SIZE);
 
         mErasePath = new Path();
+
+        ViewConfiguration viewConfiguration = ViewConfiguration.get(getContext());
+        mTouchSlop = viewConfiguration.getScaledTouchSlop();
+
     }
 
     /**
@@ -146,11 +164,11 @@ public class ScratchView extends View {
         int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                startErase();
+                startErase(event.getX(), event.getY());
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
-                erase();
+                erase(event.getX(), event.getY());
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
@@ -193,15 +211,40 @@ public class ScratchView extends View {
 
     /**
      * 开始擦除
+     *
+     * @param x
+     * @param y
      */
-    private void startErase() {
-
+    private void startErase(float x, float y) {
+        mErasePath.reset();
+        mErasePath.moveTo(x, y);
+        this.mStartX = x;
+        this.mStartY = y;
     }
 
     /**
      * 擦除
+     *
+     * @param x
+     * @param y
      */
-    private void erase() {
+    private void erase(float x, float y) {
+        int dx = (int) Math.abs(x - mStartX);
+        int dy = (int) Math.abs(y - mStartY);
+        if (dx >= mTouchSlop || dy >= mTouchSlop) {
+            this.mStartX = x;
+            this.mStartY = y;
+
+            mErasePath.lineTo(x, y);
+            mMaskCanvas.drawPath(mErasePath, mErasePaint);
+            onErase();
+
+            mErasePath.reset();
+            mErasePath.moveTo(mStartX, mStartY);
+        }
+    }
+
+    private void onErase() {
 
     }
 
@@ -209,6 +252,29 @@ public class ScratchView extends View {
      * 停止擦除
      */
     private void stopErase() {
+        this.mStartX = 0;
+        this.mStartY = 0;
+        mErasePath.reset();
+    }
 
+    /**
+     * 设置擦除监听器
+     *
+     * @param eraseListener
+     */
+    public void setEraseListener(EraseListener eraseListener) {
+        this.mEraseListener = eraseListener;
+    }
+
+    /**
+     * 擦除监听器
+     */
+    public static interface EraseListener {
+        /**
+         * 擦除完成回调函数
+         *
+         * @param view
+         */
+        public void onCompleted(View view);
     }
 }

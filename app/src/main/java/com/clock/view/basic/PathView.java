@@ -37,13 +37,30 @@ public class PathView extends View {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setDither(true);
-        paint.setColor(0xfffcfcfc);
-        paint.setStrokeWidth(20);
+        paint.setColor(0xffff0000);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(15);
 
         Path path = new Path();
-
         path.lineTo(300, 300);
+        canvas.drawPath(path, paint);
 
+        paint.setColor(0xff47c7b6);
+        path.reset();
+        path.moveTo(300, 300);
+        path.lineTo(0, 300);
+        canvas.drawPath(path, paint);
+
+        paint.setColor(0xff47c726);
+        path.reset();
+        path.moveTo(300, 300);
+        path.quadTo(550, 550, 600, 350);//二阶贝塞尔曲线
+        canvas.drawPath(path, paint);
+
+        paint.setColor(0xff474226);
+        path.reset();
+        path.moveTo(300, 300);
+        path.cubicTo(550, 550, 600, 600, 600, 100);//三阶贝塞尔曲线
         canvas.drawPath(path, paint);
 
     }

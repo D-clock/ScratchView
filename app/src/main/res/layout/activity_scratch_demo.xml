@@ -50,6 +50,6 @@
         <com.clock.scratch.ScratchView
             android:id="@+id/scratch_view_portrait"
             android:layout_width="match_parent"
-            android:layout_height="125dp" />
+            android:layout_height="match_parent" />
     </FrameLayout>
 </LinearLayout>
