@@ -2,6 +2,7 @@ package com.clock.scratch;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,8 +13,10 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -32,6 +35,14 @@ public class ScratchView extends View {
      * 默认蒙板的颜色
      */
     private final static int DEFAULT_MASKER_COLOR = 0xffcccccc;
+    /**
+     * 默认擦除比例
+     */
+    private final static int DEFAULT_PERCENT = 70;
+    /**
+     * 最大擦除比例
+     */
+    private final static int MAX_PERCENT = 100;
 
     /**
      * 遮罩 Paint
@@ -45,6 +56,14 @@ public class ScratchView extends View {
      * 绘制遮罩的 Canvas
      */
     private Canvas mMaskCanvas;
+    /**
+     * 蒙层的颜色
+     */
+    private int mMaskColor = DEFAULT_MASKER_COLOR;
+    /**
+     * 水印的id
+     */
+    private int mWatermarkResId;
     /**
      * 普通绘制 Bitmap 用的 Paint
      */
@@ -62,6 +81,10 @@ public class ScratchView extends View {
      */
     private Path mErasePath;
     /**
+     * 擦除尺寸大小
+     */
+    private float mEraseSize;
+    /**
      * 擦除效果起始点的x坐标
      */
     private float mStartX;
@@ -73,43 +96,67 @@ public class ScratchView extends View {
      * 最小滑动距离
      */
     private int mTouchSlop;
+    /**
+     * 完成擦除
+     */
+    private boolean mIsCompleted = false;
+    /**
+     * 最大擦除比例
+     */
+    private int mMaxPercent = DEFAULT_PERCENT;
+    /**
+     * 当前擦除比例
+     */
+    private int mPercent = 0;
 
-    private EraseListener mEraseListener;
+    private EraseStatusListener mEraseStatusListener;
 
     public ScratchView(Context context) {
         super(context);
-        init();
+        TypedArray typedArray = context.obtainStyledAttributes(R.styleable.ScratchView);
+        init(typedArray);
     }
 
     public ScratchView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ScratchView);
+        init(typedArray);
     }
 
     public ScratchView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ScratchView, defStyleAttr, 0);
+        init(typedArray);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ScratchView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ScratchView, defStyleAttr, defStyleRes);
+        init(typedArray);
     }
 
-    private void init() {
+    private void init(TypedArray typedArray) {
+        mMaskColor = typedArray.getColor(R.styleable.ScratchView_maskColor, DEFAULT_MASKER_COLOR);
+        mWatermarkResId = typedArray.getResourceId(R.styleable.ScratchView_watermark, -1);
+        mEraseSize = typedArray.getFloat(R.styleable.ScratchView_eraseSize, DEFAULT_ERASER_SIZE);
+        mMaxPercent = typedArray.getInt(R.styleable.ScratchView_maxPercent, DEFAULT_PERCENT);
+        typedArray.recycle();
+
         mMaskPaint = new Paint();
         mMaskPaint.setAntiAlias(true);//抗锯齿
         mMaskPaint.setDither(true);//防抖
-        setMaskColor(DEFAULT_MASKER_COLOR);
+        setMaskColor(mMaskColor);
 
         mBitmapPaint = new Paint();
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setDither(true);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.veins);
-        mWatermark = new BitmapDrawable(bitmap);
-        mWatermark.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+        if (mWatermarkResId != -1) {
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), mWatermarkResId);
+            mWatermark = new BitmapDrawable(bitmap);
+            mWatermark.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+        }
 
         mErasePaint = new Paint();
         mErasePaint.setAntiAlias(true);
@@ -117,7 +164,7 @@ public class ScratchView extends View {
         mErasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));//设置擦除效果
         mErasePaint.setStyle(Paint.Style.STROKE);
         mErasePaint.setStrokeCap(Paint.Cap.ROUND);//设置笔尖形状，让绘制的边缘圆滑
-        setEraserSize(DEFAULT_ERASER_SIZE);
+        setEraserSize(mEraseSize);
 
         mErasePath = new Path();
 
@@ -144,6 +191,18 @@ public class ScratchView extends View {
         mMaskPaint.setColor(color);
     }
 
+    /**
+     * 设置最大的擦除比例
+     *
+     * @param max 大于0，小于等于100
+     */
+    public void setMaxPercent(int max) {
+        if (max > 100 || max <= 0) {
+            return;
+        }
+        this.mMaxPercent = max;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -166,33 +225,44 @@ public class ScratchView extends View {
             case MotionEvent.ACTION_DOWN:
                 startErase(event.getX(), event.getY());
                 invalidate();
-                break;
+                return true;
             case MotionEvent.ACTION_MOVE:
                 erase(event.getX(), event.getY());
                 invalidate();
-                break;
+                return true;
             case MotionEvent.ACTION_UP:
                 stopErase();
                 invalidate();
-                break;
+                return true;
             default:
                 break;
         }
-        return true;
+        return super.onTouchEvent(event);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        createMasker(w, h);
+    }
 
-        mMaskBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+    /**
+     * 创建蒙层
+     *
+     * @param width
+     * @param height
+     */
+    private void createMasker(int width, int height) {
+        mMaskBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         mMaskCanvas = new Canvas(mMaskBitmap);
-        Rect rect = new Rect(0, 0, w, h);
+        Rect rect = new Rect(0, 0, width, height);
         mMaskCanvas.drawRect(rect, mMaskPaint);//绘制生成和控件大小一致的遮罩 Bitmap
 
-        Rect bounds = new Rect(rect);
-        mWatermark.setBounds(bounds);
-        mWatermark.draw(mMaskCanvas);
+        if (mWatermark != null) {
+            Rect bounds = new Rect(rect);
+            mWatermark.setBounds(bounds);
+            mWatermark.draw(mMaskCanvas);
+        }
     }
 
     private int measureSize(int measureSpec) {
@@ -245,7 +315,54 @@ public class ScratchView extends View {
     }
 
     private void onErase() {
+        int width = getWidth();
+        int height = getHeight();
+        new AsyncTask<Integer, Integer, Boolean>() {
 
+            @Override
+            protected Boolean doInBackground(Integer... params) {
+                int width = params[0];
+                int height = params[1];
+                int pixels[] = new int[width * height];
+                mMaskBitmap.getPixels(pixels, 0, width, 0, 0, width, height);//获取覆盖图层中所有的像素信息，stride用于表示一行的像素个数有多少
+
+                float erasePixelCount = 0;//擦除的像素个数
+                float totalPixelCount = width * height;//总像素个数
+
+                for (int pos = 0; pos < totalPixelCount; pos++) {
+                    if (pixels[pos] == 0) {//透明的像素值为0
+                        erasePixelCount++;
+                    }
+                }
+
+                int percent = 0;
+                if (erasePixelCount >= 0 && totalPixelCount > 0) {
+                    percent = Math.round(erasePixelCount * 100 / totalPixelCount);
+                    publishProgress(percent);
+                }
+
+                return percent >= mMaxPercent;
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer... values) {
+                super.onProgressUpdate(values);
+                mPercent = values[0];
+                onPercentUpdate();
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+                if (result && !mIsCompleted) {//标记擦除，并完成回调
+                    mIsCompleted = true;
+                    if (mEraseStatusListener != null) {
+                        mEraseStatusListener.onCompleted(ScratchView.this);
+                    }
+                }
+            }
+
+        }.execute(width, height);
     }
 
     /**
@@ -257,19 +374,63 @@ public class ScratchView extends View {
         mErasePath.reset();
     }
 
-    /**
-     * 设置擦除监听器
-     *
-     * @param eraseListener
-     */
-    public void setEraseListener(EraseListener eraseListener) {
-        this.mEraseListener = eraseListener;
+    private void onPercentUpdate() {
+        if (mEraseStatusListener != null) {
+            mEraseStatusListener.onProgress(mPercent);
+        }
     }
 
     /**
-     * 擦除监听器
+     * 设置擦除监听器
+     *
+     * @param listener
      */
-    public static interface EraseListener {
+    public void setEraseStatusListener(EraseStatusListener listener) {
+        this.mEraseStatusListener = listener;
+    }
+
+    /**
+     * 重置为初始状态
+     */
+    public void reset() {
+        mIsCompleted = false;
+
+        int width = getWidth();
+        int height = getHeight();
+        createMasker(width, height);
+        invalidate();
+
+        onErase();
+    }
+
+    /**
+     * 清除整个图层
+     */
+    public void clear() {
+        int width = getWidth();
+        int height = getHeight();
+        mMaskBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        mMaskCanvas = new Canvas(mMaskBitmap);
+        Rect rect = new Rect(0, 0, width, height);
+        mMaskCanvas.drawRect(rect, mErasePaint);
+        invalidate();
+
+        onErase();
+    }
+
+
+    /**
+     * 擦除状态监听器
+     */
+    public static interface EraseStatusListener {
+
+        /**
+         * 擦除进度
+         *
+         * @param percent 进度值，大于0，小于等于100；
+         */
+        public void onProgress(int percent);
+
         /**
          * 擦除完成回调函数
          *
