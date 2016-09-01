@@ -21,4 +21,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Custom ViewGroup" />
+
+    <Button
+        android:id="@+id/btn_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Simple TextView" />
+
+    <Button
+        android:id="@+id/btn_canvas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Canvas" />
+
+    <Button
+        android:id="@+id/btn_pdx"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="PorterDuffXfermode" />
+
+    <Button
+        android:id="@+id/btn_shader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Shader" />
+
+    <Button
+        android:id="@+id/btn_path"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Path" />
 </LinearLayout>

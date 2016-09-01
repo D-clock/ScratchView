@@ -6,16 +6,15 @@ import android.os.Bundle;
 import com.clock.view.R;
 
 /**
- * Canvas 绘画练习代码
+ * Path Demo Code
  *
  * @author Clock
- * @since 2016-08-03
  */
-public class SimpleCanvasActivity extends AppCompatActivity {
+public class PathActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_simple_canvas);
+        setContentView(R.layout.activity_path);
     }
 }

@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.SimpleCanvasActivity">
+    tools:context=".activity.CanvasActivity">
 
-    <com.clock.view.simple.SimpleCanvasView
+    <com.clock.view.basic.SimpleCanvasView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

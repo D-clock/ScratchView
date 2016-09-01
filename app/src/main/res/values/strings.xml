@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AndroidCustomView</string>
+    <string name="scratch_percent">Scratch Percent: %1$s </string>
 </resources>

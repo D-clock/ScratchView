@@ -7,13 +7,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.clock.view.activity.SimpleTextViewActivity">
+    tools:context="com.clock.view.activity.ShaderActivity">
 
-    <com.clock.view.basic.SimpleTextView
+    <ImageView
+        android:id="@+id/iv_target"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#da9637"
-        android:gravity="center"
-        android:text="I am Android Developer"
-        android:textColor="@android:color/white" />
+        android:layout_height="match_parent" />
 </RelativeLayout>

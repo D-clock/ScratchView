@@ -123,6 +123,12 @@ public class CustomView extends View {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {//在 onDraw 前被调用，应该是 View 的尺寸大小发生改变时被调用，在于 Measure 之后
+        Log.i(TAG, "onSizeChanged");
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         Log.i(TAG, "onDetachedFromWindow");
         super.onDetachedFromWindow();

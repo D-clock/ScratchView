@@ -17,8 +17,8 @@
         android:text="Basic Custom" />
 
     <Button
-        android:id="@+id/btn_simple_custom"
+        android:id="@+id/btn_scratch_demo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Simple Custom" />
+        android:text="Scratch Demo" />
 </LinearLayout>
