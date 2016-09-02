@@ -88,6 +88,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="WaterMark：" />
+
+            <RadioGroup
+                android:id="@+id/rg_watermark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_alipay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alipay" />
+
+                <RadioButton
+                    android:id="@+id/rb_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No" />
+
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="5dp">
@@ -101,6 +133,7 @@
                 android:id="@+id/sb_erase_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:max="100"
                 android:progress="60" />
 
         </LinearLayout>
@@ -121,6 +154,7 @@
                 android:id="@+id/sb_max_percent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:max="100"
                 android:progress="70" />
 
         </LinearLayout>
