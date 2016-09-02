@@ -87,8 +87,11 @@ public class ScratchDemoActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rg_color);
-        radioGroup.setOnCheckedChangeListener(this);
+        RadioGroup colorGroup = (RadioGroup) findViewById(R.id.rg_color);
+        colorGroup.setOnCheckedChangeListener(this);
+        RadioGroup watermarkGroup = (RadioGroup) findViewById(R.id.rg_watermark);
+        watermarkGroup.setOnCheckedChangeListener(this);
+
     }
 
     @Override
@@ -114,6 +117,13 @@ public class ScratchDemoActivity extends AppCompatActivity implements View.OnCli
 
         } else if (checkedId == R.id.rb_origin) {
             mScratchView.setMaskColor(0xffcccccc);
+
+        } else if (checkedId == R.id.rb_alipay) {
+            mScratchView.setWatermark(R.mipmap.alipay);
+
+        } else if (checkedId == R.id.rb_no) {
+            mScratchView.setWatermark(-1);
+
         }
         mScratchView.reset();
     }

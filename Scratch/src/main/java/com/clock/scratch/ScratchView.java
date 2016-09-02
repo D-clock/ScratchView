@@ -16,7 +16,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -57,13 +56,10 @@ public class ScratchView extends View {
      */
     private Canvas mMaskCanvas;
     /**
+     * set
      * 蒙层的颜色
      */
     private int mMaskColor = DEFAULT_MASKER_COLOR;
-    /**
-     * 水印的id
-     */
-    private int mWatermarkResId;
     /**
      * 普通绘制 Bitmap 用的 Paint
      */
@@ -138,7 +134,7 @@ public class ScratchView extends View {
 
     private void init(TypedArray typedArray) {
         mMaskColor = typedArray.getColor(R.styleable.ScratchView_maskColor, DEFAULT_MASKER_COLOR);
-        mWatermarkResId = typedArray.getResourceId(R.styleable.ScratchView_watermark, -1);
+        int watermarkResId = typedArray.getResourceId(R.styleable.ScratchView_watermark, -1);
         mEraseSize = typedArray.getFloat(R.styleable.ScratchView_eraseSize, DEFAULT_ERASER_SIZE);
         mMaxPercent = typedArray.getInt(R.styleable.ScratchView_maxPercent, DEFAULT_PERCENT);
         typedArray.recycle();
@@ -152,11 +148,7 @@ public class ScratchView extends View {
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setDither(true);
 
-        if (mWatermarkResId != -1) {
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), mWatermarkResId);
-            mWatermark = new BitmapDrawable(bitmap);
-            mWatermark.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-        }
+        setWatermark(watermarkResId);
 
         mErasePaint = new Paint();
         mErasePaint.setAntiAlias(true);
@@ -387,6 +379,21 @@ public class ScratchView extends View {
      */
     public void setEraseStatusListener(EraseStatusListener listener) {
         this.mEraseStatusListener = listener;
+    }
+
+    /**
+     * 设置水印图标
+     *
+     * @param resId 图标资源id，-1表示去除水印
+     */
+    public void setWatermark(int resId) {
+        if (resId == -1) {
+            mWatermark = null;
+        } else {
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
+            mWatermark = new BitmapDrawable(bitmap);
+            mWatermark.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+        }
     }
 
     /**
