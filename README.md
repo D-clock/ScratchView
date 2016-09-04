@@ -10,7 +10,7 @@ This is my project about android custom view！
 
 |     Module Name                |        Demo Screen              |
 | ----------------------------  | ----------------------------- | 
-| Scratch | ![ScratchView][screen/scratch-demo-screen.gif]   |
+| Scratch | ![ScratchView](screen/scratch-demo-screen.gif)   |
 
 ## License
 
