@@ -1,5 +1,16 @@
 # AndroidCustomView
-About Android Custom View
+
+This is my project about android custom view！
+
+## Articles
+
+- [ScratchView：一步步打造万能的 Android 刮奖效果控件](http://www.jianshu.com/p/2514a08d8217)
+
+## Demo Screen
+
+|     Module Name                |        Demo Screen              |
+| ----------------------------  | ----------------------------- | 
+| Scratch | ![ScratchView][screen/scratch-demo-screen.gif]   |
 
 ## License
 

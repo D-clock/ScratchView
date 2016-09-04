@@ -207,7 +207,6 @@ public class ScratchView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawBitmap(mMaskBitmap, 0, 0, mBitmapPaint);//绘制图层遮罩
-        canvas.drawPath(mErasePath, mErasePaint);
     }
 
     @Override
