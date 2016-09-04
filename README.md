@@ -8,9 +8,9 @@ This is my project about android custom view！
 
 ## Demo Screen
 
-|     Module Name                |        Demo Screen              |
+|     Module Name                |        Demo Screen              |        Use Guide              |
 | ----------------------------  | ----------------------------- | 
-| Scratch | ![ScratchView](screen/scratch-demo-screen.gif)   |
+| Scratch | ![ScratchView](screen/scratch-demo-screen.gif)   |  Writing...   |
 
 ## License
 
