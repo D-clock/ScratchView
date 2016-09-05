@@ -104,6 +104,10 @@ public class ScratchView extends View {
      * 当前擦除比例
      */
     private int mPercent = 0;
+    /**
+     * 存放蒙层像素信息的数组
+     */
+    private int mPixels[];
 
     private EraseStatusListener mEraseStatusListener;
 
@@ -254,6 +258,8 @@ public class ScratchView extends View {
             mWatermark.setBounds(bounds);
             mWatermark.draw(mMaskCanvas);
         }
+
+        mPixels = new int[width * height];
     }
 
     private int measureSize(int measureSpec) {
@@ -314,14 +320,13 @@ public class ScratchView extends View {
             protected Boolean doInBackground(Integer... params) {
                 int width = params[0];
                 int height = params[1];
-                int pixels[] = new int[width * height];
-                mMaskBitmap.getPixels(pixels, 0, width, 0, 0, width, height);//获取覆盖图层中所有的像素信息，stride用于表示一行的像素个数有多少
+                mMaskBitmap.getPixels(mPixels, 0, width, 0, 0, width, height);//获取覆盖图层中所有的像素信息，stride用于表示一行的像素个数有多少
 
                 float erasePixelCount = 0;//擦除的像素个数
                 float totalPixelCount = width * height;//总像素个数
 
                 for (int pos = 0; pos < totalPixelCount; pos++) {
-                    if (pixels[pos] == 0) {//透明的像素值为0
+                    if (mPixels[pos] == 0) {//透明的像素值为0
                         erasePixelCount++;
                     }
                 }
