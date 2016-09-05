@@ -56,11 +56,6 @@ public class ScratchView extends View {
      */
     private Canvas mMaskCanvas;
     /**
-     * set
-     * 蒙层的颜色
-     */
-    private int mMaskColor = DEFAULT_MASKER_COLOR;
-    /**
      * 普通绘制 Bitmap 用的 Paint
      */
     private Paint mBitmapPaint;
@@ -76,10 +71,6 @@ public class ScratchView extends View {
      * 擦除轨迹
      */
     private Path mErasePath;
-    /**
-     * 擦除尺寸大小
-     */
-    private float mEraseSize;
     /**
      * 擦除效果起始点的x坐标
      */
@@ -137,16 +128,16 @@ public class ScratchView extends View {
     }
 
     private void init(TypedArray typedArray) {
-        mMaskColor = typedArray.getColor(R.styleable.ScratchView_maskColor, DEFAULT_MASKER_COLOR);
+        int maskColor = typedArray.getColor(R.styleable.ScratchView_maskColor, DEFAULT_MASKER_COLOR);
         int watermarkResId = typedArray.getResourceId(R.styleable.ScratchView_watermark, -1);
-        mEraseSize = typedArray.getFloat(R.styleable.ScratchView_eraseSize, DEFAULT_ERASER_SIZE);
+        float eraseSize = typedArray.getFloat(R.styleable.ScratchView_eraseSize, DEFAULT_ERASER_SIZE);
         mMaxPercent = typedArray.getInt(R.styleable.ScratchView_maxPercent, DEFAULT_PERCENT);
         typedArray.recycle();
 
         mMaskPaint = new Paint();
         mMaskPaint.setAntiAlias(true);//抗锯齿
         mMaskPaint.setDither(true);//防抖
-        setMaskColor(mMaskColor);
+        setMaskColor(maskColor);
 
         mBitmapPaint = new Paint();
         mBitmapPaint.setAntiAlias(true);
@@ -160,7 +151,7 @@ public class ScratchView extends View {
         mErasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));//设置擦除效果
         mErasePaint.setStyle(Paint.Style.STROKE);
         mErasePaint.setStrokeCap(Paint.Cap.ROUND);//设置笔尖形状，让绘制的边缘圆滑
-        setEraserSize(mEraseSize);
+        setEraserSize(eraseSize);
 
         mErasePath = new Path();
 

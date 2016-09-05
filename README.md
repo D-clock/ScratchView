@@ -1,6 +1,6 @@
 # ScratchView
 
-This is a ScratchView！
+This is a android custom view , like a scratch card effect!
 
 ## Articles
 
