@@ -14,9 +14,69 @@ This is a android custom view , like a scratch card effect!
 
 ![ScratchView](screen/scratch-demo-screen.gif) 
 
+## Import
+
+Gradle
+
+```
+
+dependencies {
+    compile 'com.clock.scratch:Scratch:1.0.0'
+}
+
+```
+
+Maven
+
+```
+
+<dependency>
+  <groupId>com.clock.scratch</groupId>
+  <artifactId>Scratch</artifactId>
+  <version>1.0.0</version>
+  <type>pom</type>
+</dependency>
+
+```
+
 ## How to use
 
-Hard writing!
+- Create a contains of content view and ScratchView FrameLayout，let ScratchView displayed in the top.
+
+```xml
+
+	 <FrameLayout
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp">
+
+		<!-- content view -->
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/lufy" />
+
+		<!-- scratch view -->
+        <com.clock.scratch.ScratchView
+            android:id="@+id/scratch_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+```
+
+- Key Properties and Java API
+
+| Properties | Java API |
+|------------|----------|
+| scratch:maskColor | setMaskColor(int color) |
+| scratch:watermark | setWatermark(int resId) |
+| scratch:eraseSize | setEraserSize(float eraserSize) |
+| scratch:maxPercent | setMaxPercent(int max) |
+
+More use , you need see the demo code...
 
 ## License
 
