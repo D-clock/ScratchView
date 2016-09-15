@@ -295,14 +295,14 @@ public class ScratchView extends View {
 
             mErasePath.lineTo(x, y);
             mMaskCanvas.drawPath(mErasePath, mErasePaint);
-            onErase();
+            //updateErasePercent();
 
             mErasePath.reset();
             mErasePath.moveTo(mStartX, mStartY);
         }
     }
 
-    private void onErase() {
+    private void updateErasePercent() {
         int width = getWidth();
         int height = getHeight();
         new AsyncTask<Integer, Integer, Boolean>() {
@@ -359,6 +359,7 @@ public class ScratchView extends View {
         this.mStartX = 0;
         this.mStartY = 0;
         mErasePath.reset();
+        updateErasePercent();
     }
 
     private void onPercentUpdate() {
@@ -402,7 +403,7 @@ public class ScratchView extends View {
         createMasker(width, height);
         invalidate();
 
-        onErase();
+        updateErasePercent();
     }
 
     /**
@@ -417,7 +418,7 @@ public class ScratchView extends View {
         mMaskCanvas.drawRect(rect, mErasePaint);
         invalidate();
 
-        onErase();
+        updateErasePercent();
     }
 
 

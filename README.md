@@ -2,6 +2,10 @@
 
 This is a android custom view , like a scratch card effect!
 
+## Last Update
+
+- 采纳[DearZack童鞋的优化思路](https://github.com/D-clock/ScratchView/issues/3)，把计算擦除面积比例的操作放在手指离开屏幕时，以降低对CPU的占用。
+
 ## Articles
 
 - [ScratchView：一步步打造万能的 Android 刮奖效果控件](http://www.jianshu.com/p/2514a08d8217)
